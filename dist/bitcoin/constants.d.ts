@@ -1,5 +1,5 @@
-import { networks } from "bitcoinjs-lib";
 import BigNumber from "bignumber.js";
+import { networks } from "bitcoinjs-lib";
 declare const BlockStreamURL = "https://blockstream.info/api";
 declare const MinSats = 1000;
 declare const network: networks.Network;

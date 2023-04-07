@@ -1,16 +1,16 @@
 const wif = require("wif");
-import {
-    initEccLib,
-    crypto,
-    payments,
-    Signer
-} from "bitcoinjs-lib";
-import { network, BNZero } from "./constants";
-import { ECPairFactory, ECPairAPI } from "ecpair";
 import * as ecc from "@bitcoinerlab/secp256k1";
-import { Inscription, UTXO } from "./types";
-import { Psbt } from "bitcoinjs-lib";
 import BigNumber from "bignumber.js";
+import {
+    Psbt,
+    Signer,
+    crypto,
+    initEccLib,
+    payments
+} from "bitcoinjs-lib";
+import { ECPairAPI, ECPairFactory } from "ecpair";
+import { BNZero, network } from "./constants";
+const Buffer = require('safe-buffer').Buffer;
 initEccLib(ecc);
 const ECPair: ECPairAPI = ECPairFactory(ecc);
 

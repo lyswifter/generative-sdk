@@ -1,6 +1,7 @@
-import SDKError, { ERROR_CODE } from "../constants/error";
-import { ECPair, network, toXOnly, tweakSigner } from "../bitcoin";
 import { payments } from "bitcoinjs-lib";
+import { ECPair, network, toXOnly, tweakSigner } from "../bitcoin";
+import SDKError, { ERROR_CODE } from "../constants/error";
+const Buffer = require('safe-buffer').Buffer;
 
 function isPrivateKey(privateKey: Buffer) {
     let isValid = false;

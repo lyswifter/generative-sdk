@@ -1,6 +1,7 @@
-import { ICreateTxResp, Inscription, UTXO, ICreateTxSplitInscriptionResp, PaymentInfo, BuyReqFullInfo } from "./types";
-import { selectUTXOs } from "./selectcoin";
 import BigNumber from "bignumber.js";
+import { selectUTXOs } from "./selectcoin";
+import { BuyReqFullInfo, ICreateTxResp, ICreateTxSplitInscriptionResp, Inscription, PaymentInfo, UTXO } from "./types";
+declare const Buffer: any;
 /**
 * createTx creates the Bitcoin transaction (including sending inscriptions).
 * NOTE: Currently, the function only supports sending from Taproot address.

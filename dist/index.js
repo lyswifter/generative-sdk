@@ -4,8 +4,8 @@ Object.defineProperty(exports, '__esModule', { value: true });
 
 var bitcoinjsLib = require('bitcoinjs-lib');
 var axios = require('axios');
-var ecpair = require('ecpair');
 var ecc = require('@bitcoinerlab/secp256k1');
+var ecpair = require('ecpair');
 
 function _interopDefaultLegacy (e) { return e && typeof e === 'object' && 'default' in e ? e : { 'default': e }; }
 
@@ -2926,7 +2926,80 @@ const InputSize = 68;
 const OutputSize = 43;
 const BNZero = new BigNumber(0);
 
+const ERROR_CODE = {
+    INVALID_CODE: "0",
+    INVALID_PARAMS: "-1",
+    NOT_SUPPORT_SEND: "-2",
+    NOT_FOUND_INSCRIPTION: "-3",
+    NOT_ENOUGH_BTC_TO_SEND: "-4",
+    NOT_ENOUGH_BTC_TO_PAY_FEE: "-5",
+    ERR_BROADCAST_TX: "-6",
+    INVALID_SIG: "-7",
+    INVALID_VALIDATOR_LABEL: "-8",
+    NOT_FOUND_UTXO: "-9",
+    NOT_FOUND_DUMMY_UTXO: "-10",
+};
+const ERROR_MESSAGE = {
+    [ERROR_CODE.INVALID_CODE]: {
+        message: "Something went wrong.",
+        desc: "Something went wrong.",
+    },
+    [ERROR_CODE.INVALID_PARAMS]: {
+        message: "Invalid input params.",
+        desc: "Invalid input params.",
+    },
+    [ERROR_CODE.NOT_SUPPORT_SEND]: {
+        message: "This inscription is not supported to send.",
+        desc: "This inscription is not supported to send.",
+    },
+    [ERROR_CODE.NOT_FOUND_INSCRIPTION]: {
+        message: "Can not find inscription UTXO in your wallet.",
+        desc: "Can not find inscription UTXO in your wallet.",
+    },
+    [ERROR_CODE.NOT_ENOUGH_BTC_TO_SEND]: {
+        message: "Your balance is insufficient. Please top up BTC to your wallet.",
+        desc: "Your balance is insufficient. Please top up BTC to your wallet.",
+    },
+    [ERROR_CODE.NOT_ENOUGH_BTC_TO_PAY_FEE]: {
+        message: "Your balance is insufficient. Please top up BTC to pay network fee.",
+        desc: "Your balance is insufficient. Please top up BTC to pay network fee.",
+    },
+    [ERROR_CODE.ERR_BROADCAST_TX]: {
+        message: "There was an issue when broadcasting the transaction to the BTC network.",
+        desc: "There was an issue when broadcasting the transaction to the BTC network.",
+    },
+    [ERROR_CODE.INVALID_SIG]: {
+        message: "Signature is invalid in the partially signed bitcoin transaction.",
+        desc: "Signature is invalid in the partially signed bitcoin transaction.",
+    },
+    [ERROR_CODE.INVALID_VALIDATOR_LABEL]: {
+        message: "Missing or invalid label.",
+        desc: "Missing or invalid label.",
+    },
+    [ERROR_CODE.NOT_FOUND_UTXO]: {
+        message: "Can not find UTXO with exact value.",
+        desc: "Can not find UTXO with exact value.",
+    },
+    [ERROR_CODE.NOT_FOUND_DUMMY_UTXO]: {
+        message: "Can not find dummy UTXO in your wallet.",
+        desc: "Can not find dummy UTXO in your wallet.",
+    },
+};
+class SDKError extends Error {
+    constructor(code, desc) {
+        super();
+        const _error = ERROR_MESSAGE[code];
+        this.message = `${_error.message} (${code})` || "";
+        this.code = code;
+        this.desc = desc || (_error === null || _error === void 0 ? void 0 : _error.desc);
+    }
+    getMessage() {
+        return this.message;
+    }
+}
+
 const wif = require("wif");
+const Buffer$1 = require('safe-buffer').Buffer;
 bitcoinjsLib.initEccLib(ecc__namespace);
 const ECPair = ecpair.ECPairFactory(ecc__namespace);
 /**
@@ -3009,12 +3082,12 @@ function tweakSigner(signer, opts = {}) {
     if (!tweakedPrivateKey) {
         throw new Error("Invalid tweaked private key!");
     }
-    return ECPair.fromPrivateKey(Buffer.from(tweakedPrivateKey), {
+    return ECPair.fromPrivateKey(Buffer$1.from(tweakedPrivateKey), {
         network: opts.network,
     });
 }
 function tapTweakHash(pubKey, h) {
-    return bitcoinjsLib.crypto.taggedHash("TapTweak", Buffer.concat(h ? [pubKey, h] : [pubKey]));
+    return bitcoinjsLib.crypto.taggedHash("TapTweak", Buffer$1.concat(h ? [pubKey, h] : [pubKey]));
 }
 const generateTaprootAddress = (privateKey) => {
     const keyPair = ECPair.fromPrivateKey(privateKey);
@@ -3043,78 +3116,6 @@ const generateTaprootKeyPair = (privateKey) => {
 const fromSat = (sat) => {
     return sat / 1e8;
 };
-
-const ERROR_CODE = {
-    INVALID_CODE: "0",
-    INVALID_PARAMS: "-1",
-    NOT_SUPPORT_SEND: "-2",
-    NOT_FOUND_INSCRIPTION: "-3",
-    NOT_ENOUGH_BTC_TO_SEND: "-4",
-    NOT_ENOUGH_BTC_TO_PAY_FEE: "-5",
-    ERR_BROADCAST_TX: "-6",
-    INVALID_SIG: "-7",
-    INVALID_VALIDATOR_LABEL: "-8",
-    NOT_FOUND_UTXO: "-9",
-    NOT_FOUND_DUMMY_UTXO: "-10",
-};
-const ERROR_MESSAGE = {
-    [ERROR_CODE.INVALID_CODE]: {
-        message: "Something went wrong.",
-        desc: "Something went wrong.",
-    },
-    [ERROR_CODE.INVALID_PARAMS]: {
-        message: "Invalid input params.",
-        desc: "Invalid input params.",
-    },
-    [ERROR_CODE.NOT_SUPPORT_SEND]: {
-        message: "This inscription is not supported to send.",
-        desc: "This inscription is not supported to send.",
-    },
-    [ERROR_CODE.NOT_FOUND_INSCRIPTION]: {
-        message: "Can not find inscription UTXO in your wallet.",
-        desc: "Can not find inscription UTXO in your wallet.",
-    },
-    [ERROR_CODE.NOT_ENOUGH_BTC_TO_SEND]: {
-        message: "Your balance is insufficient. Please top up BTC to your wallet.",
-        desc: "Your balance is insufficient. Please top up BTC to your wallet.",
-    },
-    [ERROR_CODE.NOT_ENOUGH_BTC_TO_PAY_FEE]: {
-        message: "Your balance is insufficient. Please top up BTC to pay network fee.",
-        desc: "Your balance is insufficient. Please top up BTC to pay network fee.",
-    },
-    [ERROR_CODE.ERR_BROADCAST_TX]: {
-        message: "There was an issue when broadcasting the transaction to the BTC network.",
-        desc: "There was an issue when broadcasting the transaction to the BTC network.",
-    },
-    [ERROR_CODE.INVALID_SIG]: {
-        message: "Signature is invalid in the partially signed bitcoin transaction.",
-        desc: "Signature is invalid in the partially signed bitcoin transaction.",
-    },
-    [ERROR_CODE.INVALID_VALIDATOR_LABEL]: {
-        message: "Missing or invalid label.",
-        desc: "Missing or invalid label.",
-    },
-    [ERROR_CODE.NOT_FOUND_UTXO]: {
-        message: "Can not find UTXO with exact value.",
-        desc: "Can not find UTXO with exact value.",
-    },
-    [ERROR_CODE.NOT_FOUND_DUMMY_UTXO]: {
-        message: "Can not find dummy UTXO in your wallet.",
-        desc: "Can not find dummy UTXO in your wallet.",
-    },
-};
-class SDKError extends Error {
-    constructor(code, desc) {
-        super();
-        const _error = ERROR_MESSAGE[code];
-        this.message = `${_error.message} (${code})` || "";
-        this.code = code;
-        this.desc = desc || (_error === null || _error === void 0 ? void 0 : _error.desc);
-    }
-    getMessage() {
-        return this.message;
-    }
-}
 
 /**
 * selectUTXOs selects the most reasonable UTXOs to create the transaction.
@@ -3420,6 +3421,7 @@ const findExactValueUTXO = (cardinalUTXOs, value) => {
     throw new SDKError(ERROR_CODE.NOT_FOUND_UTXO, value.toString());
 };
 
+require('safe-buffer').Buffer;
 /**
 * createTx creates the Bitcoin transaction (including sending inscriptions).
 * NOTE: Currently, the function only supports sending from Taproot address.
@@ -3834,6 +3836,7 @@ const getBTCBalance = (params) => {
     return btcBalance;
 };
 
+require('safe-buffer').Buffer;
 /**
 * createPSBTToSell creates the partially signed bitcoin transaction to sale the inscription.
 * NOTE: Currently, the function only supports sending from Taproot address.
@@ -4435,6 +4438,7 @@ const reqBuyMultiInscriptions = (params) => {
     };
 };
 
+const Buffer = require('safe-buffer').Buffer;
 function isPrivateKey(privateKey) {
     let isValid = false;
     try {

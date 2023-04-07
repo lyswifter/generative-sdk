@@ -1,6 +1,6 @@
+import BigNumber from "bignumber.js";
 import { BNZero } from "./constants";
 import { Inscription, UTXO } from "./types";
-import BigNumber from "bignumber.js";
 
 const getBTCBalance = (
     params: {

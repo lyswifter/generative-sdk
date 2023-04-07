@@ -1,6 +1,7 @@
+import BigNumber from "bignumber.js";
 import { Psbt } from "bitcoinjs-lib";
 import { BuyReqInfo, ICreateTxBuyResp, ICreateTxResp, ICreateTxSellResp, Inscription, UTXO } from "./types";
-import BigNumber from "bignumber.js";
+declare const Buffer: any;
 /**
 * createPSBTToSell creates the partially signed bitcoin transaction to sale the inscription.
 * NOTE: Currently, the function only supports sending from Taproot address.

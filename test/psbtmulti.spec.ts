@@ -1,16 +1,13 @@
-import {
-    createPSBTToSell,
-    createPSBTToBuy,
-    UTXO, network,
-    convertPrivateKeyFromStr,
-    convertPrivateKey,
-    reqListForSaleInscription,
-    reqBuyInscription, DummyUTXOValue, broadcastTx,
-    BuyReqInfo, reqBuyMultiInscriptions, findExactValueUTXO, estimateNumInOutputsForBuyInscription, estimateTxFee
-} from "../src/index";
-import { Psbt } from "bitcoinjs-lib";
-import { assert } from "chai";
 import BigNumber from 'bignumber.js';
+import { assert } from "chai";
+import {
+    BuyReqInfo,
+    convertPrivateKeyFromStr,
+    estimateTxFee,
+    reqBuyMultiInscriptions,
+    reqListForSaleInscription
+} from "../src/index";
+const Buffer = require('safe-buffer').Buffer;
 require("dotenv").config({ path: __dirname + "/.env" });
 console.log(__dirname + "../test/.env");
 

@@ -1,8 +1,8 @@
 /// <reference types="node" />
-import { payments, Signer } from "bitcoinjs-lib";
-import { ECPairAPI } from "ecpair";
-import { Psbt } from "bitcoinjs-lib";
 import BigNumber from "bignumber.js";
+import { Psbt, Signer, payments } from "bitcoinjs-lib";
+import { ECPairAPI } from "ecpair";
+declare const Buffer: any;
 declare const ECPair: ECPairAPI;
 /**
 * convertPrivateKey converts buffer private key to WIF private key string

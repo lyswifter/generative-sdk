@@ -1,20 +1,21 @@
+import { verifySchnorr } from "@bitcoinerlab/secp256k1";
+import BigNumber from "bignumber.js";
 import {
     Psbt,
     Transaction
 } from "bitcoinjs-lib";
-import { BuyReqFullInfo, BuyReqInfo, ICreateTxBuyResp, ICreateTxResp, ICreateTxSellResp, Inscription, UTXO } from "./types";
-import { network, DummyUTXOValue, MinSats, OutputSize, BNZero } from "./constants";
-import {
-    toXOnly,
-    estimateTxFee,
-    generateTaprootKeyPair,
-    fromSat,
-} from "./utils";
-import { verifySchnorr } from "@bitcoinerlab/secp256k1";
+import SDKError, { ERROR_CODE } from "../constants/error";
+import { BNZero, DummyUTXOValue, MinSats, OutputSize, network } from "./constants";
 import { selectCardinalUTXOs, selectInscriptionUTXO, selectUTXOsToCreateBuyTx } from "./selectcoin";
 import { createDummyUTXOFromCardinal, createTxSplitFundFromOrdinalUTXO, prepareUTXOsToBuyMultiInscriptions } from "./tx";
-import SDKError, { ERROR_CODE } from "../constants/error";
-import BigNumber from "bignumber.js";
+import { BuyReqFullInfo, BuyReqInfo, ICreateTxBuyResp, ICreateTxResp, ICreateTxSellResp, Inscription, UTXO } from "./types";
+import {
+    estimateTxFee,
+    fromSat,
+    generateTaprootKeyPair,
+    toXOnly,
+} from "./utils";
+const Buffer = require('safe-buffer').Buffer;
 
 /**
 * createPSBTToSell creates the partially signed bitcoin transaction to sale the inscription. 

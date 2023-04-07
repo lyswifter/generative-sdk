@@ -1,6 +1,6 @@
 /// <reference types="node" />
-import { networks, Transaction, Psbt, Signer, payments } from 'bitcoinjs-lib';
 import BigNumber from 'bignumber.js';
+import { networks, Transaction, Psbt, Signer, payments } from 'bitcoinjs-lib';
 import * as ecpair from 'ecpair';
 import { ECPairAPI } from 'ecpair';
 
@@ -175,6 +175,7 @@ declare const findExactValueUTXO: (cardinalUTXOs: UTXO[], value: BigNumber) => {
     utxo: UTXO;
 };
 
+declare const Buffer$2: any;
 /**
 * createTx creates the Bitcoin transaction (including sending inscriptions).
 * NOTE: Currently, the function only supports sending from Taproot address.
@@ -190,7 +191,7 @@ declare const findExactValueUTXO: (cardinalUTXOs: UTXO[], value: BigNumber) => {
 * @returns the hex signed transaction
 * @returns the network fee
 */
-declare const createTx: (senderPrivateKey: Buffer, utxos: UTXO[], inscriptions: {
+declare const createTx: (senderPrivateKey: Buffer$2, utxos: UTXO[], inscriptions: {
     [key: string]: Inscription[];
 }, sendInscriptionID: string | undefined, receiverInsAddress: string, sendAmount: BigNumber, feeRatePerByte: number, isUseInscriptionPayFeeParam?: boolean) => ICreateTxResp;
 /**
@@ -209,7 +210,7 @@ declare const createTx: (senderPrivateKey: Buffer, utxos: UTXO[], inscriptions: 
 * @returns the network fee
 */
 declare const createTxSendBTC: ({ senderPrivateKey, utxos, inscriptions, paymentInfos, feeRatePerByte, }: {
-    senderPrivateKey: Buffer;
+    senderPrivateKey: Buffer$2;
     utxos: UTXO[];
     inscriptions: {
         [key: string]: Inscription[];
@@ -233,7 +234,7 @@ declare const createTxSendBTC: ({ senderPrivateKey, utxos, inscriptions, payment
 * @returns the hex signed transaction
 * @returns the network fee
 */
-declare const createTxWithSpecificUTXOs: (senderPrivateKey: Buffer, utxos: UTXO[], sendInscriptionID: string | undefined, receiverInsAddress: string, sendAmount: BigNumber, valueOutInscription: BigNumber, changeAmount: BigNumber, fee: BigNumber) => {
+declare const createTxWithSpecificUTXOs: (senderPrivateKey: Buffer$2, utxos: UTXO[], sendInscriptionID: string | undefined, receiverInsAddress: string, sendAmount: BigNumber, valueOutInscription: BigNumber, changeAmount: BigNumber, fee: BigNumber) => {
     txID: string;
     txHex: string;
     fee: BigNumber;
@@ -253,8 +254,8 @@ declare const createTxWithSpecificUTXOs: (senderPrivateKey: Buffer, utxos: UTXO[
 * @returns the hex signed transaction
 * @returns the network fee
 */
-declare const createTxSplitFundFromOrdinalUTXO: (senderPrivateKey: Buffer, inscriptionUTXO: UTXO, inscriptionInfo: Inscription, sendAmount: BigNumber, feeRatePerByte: number) => ICreateTxSplitInscriptionResp;
-declare const createDummyUTXOFromCardinal: (senderPrivateKey: Buffer, utxos: UTXO[], inscriptions: {
+declare const createTxSplitFundFromOrdinalUTXO: (senderPrivateKey: Buffer$2, inscriptionUTXO: UTXO, inscriptionInfo: Inscription, sendAmount: BigNumber, feeRatePerByte: number) => ICreateTxSplitInscriptionResp;
+declare const createDummyUTXOFromCardinal: (senderPrivateKey: Buffer$2, utxos: UTXO[], inscriptions: {
     [key: string]: Inscription[];
 }, feeRatePerByte: number) => Promise<{
     dummyUTXO: UTXO;
@@ -265,7 +266,7 @@ declare const createDummyUTXOFromCardinal: (senderPrivateKey: Buffer, utxos: UTX
     txHex: string;
 }>;
 declare const prepareUTXOsToBuyMultiInscriptions: ({ privateKey, address, utxos, inscriptions, feeRatePerByte, buyReqFullInfos, }: {
-    privateKey: Buffer;
+    privateKey: Buffer$2;
     address: string;
     utxos: UTXO[];
     inscriptions: {
@@ -284,19 +285,20 @@ declare const prepareUTXOsToBuyMultiInscriptions: ({ privateKey, address, utxos,
 };
 declare const broadcastTx: (txHex: string) => Promise<string>;
 
+declare const Buffer$1: any;
 declare const ECPair: ECPairAPI;
 /**
 * convertPrivateKey converts buffer private key to WIF private key string
 * @param bytes buffer private key
 * @returns the WIF private key string
 */
-declare const convertPrivateKey: (bytes: Buffer) => string;
+declare const convertPrivateKey: (bytes: Buffer$1) => string;
 /**
 * convertPrivateKeyFromStr converts private key WIF string to Buffer
 * @param str private key string
 * @returns buffer private key
 */
-declare const convertPrivateKeyFromStr: (str: string) => Buffer;
+declare const convertPrivateKeyFromStr: (str: string) => Buffer$1;
 /**
 * estimateTxFee estimates the transaction fee
 * @param numIns number of inputs in the transaction
@@ -327,11 +329,11 @@ declare const estimateNumInOutputsForBuyInscription: (estNumInputsFromBuyer: num
     numIns: number;
     numOuts: number;
 };
-declare function toXOnly(pubkey: Buffer): Buffer;
+declare function toXOnly(pubkey: Buffer$1): Buffer$1;
 declare function tweakSigner(signer: Signer, opts?: any): Signer;
-declare function tapTweakHash(pubKey: Buffer, h: Buffer | undefined): Buffer;
-declare const generateTaprootAddress: (privateKey: Buffer) => string;
-declare const generateTaprootKeyPair: (privateKey: Buffer) => {
+declare function tapTweakHash(pubKey: Buffer$1, h: Buffer$1 | undefined): Buffer$1;
+declare const generateTaprootAddress: (privateKey: Buffer$1) => string;
+declare const generateTaprootKeyPair: (privateKey: Buffer$1) => {
     keyPair: ecpair.ECPairInterface;
     senderAddress: string;
     tweakedSigner: Signer;
@@ -346,6 +348,7 @@ declare const getBTCBalance: (params: {
     };
 }) => BigNumber;
 
+declare const Buffer: any;
 /**
 * createPSBTToSell creates the partially signed bitcoin transaction to sale the inscription.
 * NOTE: Currently, the function only supports sending from Taproot address.

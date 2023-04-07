@@ -1,12 +1,8 @@
-import { assert } from "chai";
 
 import {
-    networks,
-    payments,
-    Psbt
+    networks
 } from "bitcoinjs-lib";
-import BigNumber from "bignumber.js";
-import { broadcastTx, convertPrivateKeyFromStr, ECPair, fromSat, generateTaprootKeyPair, toXOnly } from "../src/index";
+import { convertPrivateKeyFromStr, generateTaprootKeyPair, toXOnly } from "../src/index";
 const network = networks.bitcoin;  // mainnet
 
 
